@@ -9,33 +9,39 @@ mp_draw = mp.solutions.drawing_utils
 # Start webcam
 cap = cv2.VideoCapture(0)
 
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        break
+if not cap.isOpened():
+    print("Error: Could not open video stream")
+    exit()
 
-    # Flip the image for a selfie view
-    frame = cv2.flip(frame, 1)
-    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+try:
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
 
-    # Process hands
-    result = hands.process(rgb_frame)
+        # Flip the image for a selfie view
+        frame = cv2.flip(frame, 1)
+        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    if result.multi_hand_landmarks:
-        for hand_landmarks in result.multi_hand_landmarks:
-            # Draw landmarks on the frame
-            mp_draw.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
+        # Process hands
+        result = hands.process(rgb_frame)
 
-            # Example: print coordinates of the index fingertip (landmark 8)
-            index_finger_tip = hand_landmarks.landmark[8]
-            h, w, c = frame.shape
-            x, y = int(index_finger_tip.x * w), int(index_finger_tip.y * h)
-            print(f"Index fingertip: ({x}, {y})")
+        if result.multi_hand_landmarks:
+            for hand_landmarks in result.multi_hand_landmarks:
+                # Draw landmarks on the frame
+                mp_draw.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
-    cv2.imshow("Hand Tracking", frame)
+                # Example: print coordinates of the index fingertip (landmark 8)
+                index_finger_tip = hand_landmarks.landmark[8]
+                h, w, c = frame.shape
+                x, y = int(index_finger_tip.x * w), int(index_finger_tip.y * h)
+                print(f"Index fingertip: ({x}, {y})")
 
-    if cv2.waitKey(1) & 0xFF == 27:  # Press ESC to quit
-        break
+        cv2.imshow("Hand Tracking", frame)
 
-cap.release()
-cv2.destroyAllWindows()
+        if cv2.waitKey(1) & 0xFF == 27:  # Press ESC to quit
+            break
+
+finally:
+    cap.release()
+    cv2.destroyAllWindows()

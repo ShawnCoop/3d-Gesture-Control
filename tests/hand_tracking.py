@@ -28,6 +28,7 @@ try:
 
         if result.multi_hand_landmarks:
             hand = result.multi_hand_landmarks[0]
+            mp_draw.draw_landmarks(frame, hand, mp_hands.HAND_CONNECTIONS)
             # Example: index fingertip landmark
             x = hand.landmark[8].x
             y = hand.landmark[8].y
