@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+env/
+venv_hand_control/
+*.egg-info/
+*.sqlite3
+
+# IDEs
+.vscode/
+.idea/
+*.code-workspace
+
+# Blender
+*.blend1
+*.blend2
+*.blend@  
+__pycache__/
+*.pyc
+
+# Cursor (general)
+.cursor/
+.cursor-config.json
+.cursor-cache/
+.cursor-history/
+cursor.log
